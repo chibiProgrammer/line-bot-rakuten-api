@@ -1,0 +1,29 @@
+current directory: /Users/nakamura_m/Documents/GitHub/line-bot-rakuten-api/vendor/bundle/ruby/2.5.0/gems/msgpack-1.5.1/ext/msgpack
+/Users/nakamura_m/.rbenv/versions/2.5.1/bin/ruby -r ./siteconf20220506-65179-11niz9g.rb extconf.rb
+checking for ruby/st.h... yes
+checking for st.h... yes
+checking for rb_enc_interned_str() in ruby.h... no
+creating Makefile
+
+current directory: /Users/nakamura_m/Documents/GitHub/line-bot-rakuten-api/vendor/bundle/ruby/2.5.0/gems/msgpack-1.5.1/ext/msgpack
+make "DESTDIR=" clean
+
+current directory: /Users/nakamura_m/Documents/GitHub/line-bot-rakuten-api/vendor/bundle/ruby/2.5.0/gems/msgpack-1.5.1/ext/msgpack
+make "DESTDIR="
+compiling buffer.c
+compiling buffer_class.c
+compiling extension_value_class.c
+compiling factory_class.c
+compiling packer.c
+compiling packer_class.c
+compiling packer_ext_registry.c
+compiling rbinit.c
+compiling rmem.c
+compiling unpacker.c
+compiling unpacker_class.c
+compiling unpacker_ext_registry.c
+linking shared-object msgpack/msgpack.bundle
+
+current directory: /Users/nakamura_m/Documents/GitHub/line-bot-rakuten-api/vendor/bundle/ruby/2.5.0/gems/msgpack-1.5.1/ext/msgpack
+make "DESTDIR=" install
+/usr/bin/install -c -m 0755 msgpack.bundle ./.gem.20220506-65179-8hn2b7/msgpack

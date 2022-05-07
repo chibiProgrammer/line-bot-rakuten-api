@@ -1,0 +1,13 @@
+current directory: /Users/nakamura_m/Documents/GitHub/line-bot-rakuten-api/vendor/bundle/ruby/2.5.0/gems/json-2.6.1/ext/json
+/Users/nakamura_m/.rbenv/versions/2.5.1/bin/ruby -r ./siteconf20220506-65179-12etdve.rb extconf.rb
+creating Makefile
+
+current directory: /Users/nakamura_m/Documents/GitHub/line-bot-rakuten-api/vendor/bundle/ruby/2.5.0/gems/json-2.6.1/ext/json
+make "DESTDIR=" clean
+
+current directory: /Users/nakamura_m/Documents/GitHub/line-bot-rakuten-api/vendor/bundle/ruby/2.5.0/gems/json-2.6.1/ext/json
+make "DESTDIR="
+make: Nothing to be done for `all'.
+
+current directory: /Users/nakamura_m/Documents/GitHub/line-bot-rakuten-api/vendor/bundle/ruby/2.5.0/gems/json-2.6.1/ext/json
+make "DESTDIR=" install
