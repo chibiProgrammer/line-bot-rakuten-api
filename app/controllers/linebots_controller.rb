@@ -1,31 +1,33 @@
 class LinebotsController < ApplicationController
-    require "line/bot"
+  require 'line/bot'
 
-    protect_from_forgery expect: [:callback]
+  # callbackアクションのCSRFトークン認証を無効
+  protect_from_forgery except: [:callback]
 
-    def callback
-        body = require.body.read
-        signature = request.env['HTTP_X_LINE_SIGNATURE']
-        return head :bad_request if client.validate_signature(body, signature)
-
-        events = client.parse_events_from(body)
-        events.each do |event|
-        case event
-            when Line::Bot::Event::Message
-                case event.type
-                when Line::Bot::Event::MessageType::Text
-                    # 入力した文字をinputに格納
-                    input = event.message['text']
-                    # search_and_create_messageメソッド内で、楽天APIを用いた商品検索、メッセージの作成を行う
-                    message = search_and_create_message(input)
-                    client.reply_message(event['replyToken'], message)
-                end
-            end
-        end
-        head :ok
+  def callback
+    body = request.body.read
+    signature = request.env['HTTP_X_LINE_SIGNATURE']
+    unless client.validate_signature(body, signature)
+      return head :bad_request
     end
+    events = client.parse_events_from(body)
+    events.each do |event|
+      case event
+      when Line::Bot::Event::Message
+        case event.type
+        when Line::Bot::Event::MessageType::Text
+          # 入力した文字をinputに格納
+          input = event.message['text']
+          # search_and_create_messageメソッド内で、楽天APIを用いた商品検索、メッセージの作成を行う
+          message = search_and_create_message(input)
+          client.reply_message(event['replyToken'], message)
+        end
+      end
+    end
+    head :ok
+  end
 
-    private
+  private
 
   def client
     @client ||= Line::Bot::Client.new do |config|
