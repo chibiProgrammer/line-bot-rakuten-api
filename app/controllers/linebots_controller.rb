@@ -10,13 +10,13 @@ class LinebotsController < ApplicationController
     unless client.validate_signature(body, signature)
       return head :bad_request
     end
-
+    
     client.parse_events_from(body).each do |event|
-      return if event.nil? || event != Line::Bot::Event::Message || event.type.nil? || event.type != Line::Bot::Event::MessageType::Text
-
-      input = event.message['text']
-      message = search_and_create_message(input)
-      client.reply_message(event['replyToken'], message)
+      if event.type == Line::Bot::Event::MessageType::Text
+        input = event.message['text']
+        message = search_and_create_message(input)
+        client.reply_message(event['replyToken'], message)
+      end
     end
     head :ok
   end
