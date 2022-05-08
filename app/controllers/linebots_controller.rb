@@ -10,19 +10,13 @@ class LinebotsController < ApplicationController
     unless client.validate_signature(body, signature)
       return head :bad_request
     end
-    events = client.parse_events_from(body)
-    events.each do |event|
-      case event
-      when Line::Bot::Event::Message
-        case event.type
-        when Line::Bot::Event::MessageType::Text
-          # 入力した文字をinputに格納
-          input = event.message['text']
-          # search_and_create_messageメソッド内で、楽天APIを用いた商品検索、メッセージの作成を行う
-          message = search_and_create_message(input)
-          client.reply_message(event['replyToken'], message)
-        end
-      end
+
+    client.parse_events_from(body).each do |event|
+      return if event.nil? || event != Line::Bot::Event::Message || event.type.nil? || event.type != Line::Bot::Event::MessageType::Text
+
+      input = event.message['text']
+      message = search_and_create_message(input)
+      client.reply_message(event['replyToken'], message)
     end
     head :ok
   end
@@ -37,15 +31,15 @@ class LinebotsController < ApplicationController
   end
 
   def search_and_create_message(input)
+    items = []
+    max_hit_items = 3 #商品取得最大値
+
     RakutenWebService.configure do |c|
       c.application_id = ENV['RAKUTEN_APPID']
       c.affiliate_id = ENV['RAKUTEN_AFID']
     end
-    # 楽天の商品検索APIで画像がある商品の中で、入力値で検索して上から3件を取得する
-    # 商品検索+ランキングでの取得はできないため標準の並び順で上から3件取得する
-    res = RakutenWebService::Ichiba::Item.search(keyword: input, hits: 3, imageFlag: 1)
-    items = []
-    # 取得したデータを使いやすいように配列に格納し直す
+
+    res = RakutenWebService::Ichiba::Item.search(keyword: input, hits: max_hit_items, imageFlag: 1)
     items = res.map{|item| item}
     make_reply_content(items)
   end
@@ -53,7 +47,7 @@ class LinebotsController < ApplicationController
   def make_reply_content(items)
     {
       "type": 'flex',
-      "altText": 'This is a Flex Message',
+      "altText": '商品情報を取得',
       "contents":
       {
         "type": 'carousel',
