@@ -61,7 +61,7 @@ class LinebotsController < ApplicationController
   end
 
   def make_part(item)
-    title = item['itemName'].slice(0..10) + '...'
+    title = item['itemName'].slice(0..20) + '...'
     price = item['itemPrice'].to_s + '円'
     url = item['itemUrl']
     image = item['mediumImageUrls'].first
